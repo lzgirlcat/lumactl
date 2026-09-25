@@ -1,7 +1,9 @@
-use std::fs;
 use std::os::unix::fs::MetadataExt;
 use std::path::Path;
+use std::time::Duration;
 
+use ddc::DdcCommandRawMarker;
+use ddc::Delay;
 use ddc::Edid;
 use ddc_hi::Backend;
 use ddc_hi::Ddc;
@@ -10,11 +12,10 @@ use ddc_hi::Handle;
 use ddc_i2c::I2cDdc;
 use eyre::eyre;
 use eyre::Context;
-use eyre::ContextCompat;
+
 use eyre::Result;
 use i2c_linux::I2c;
 
-use crate::calculate_new_brightness;
 
 pub fn get_ddc_display(name: &str) -> Result<ddc_hi::Display> {
     let i2c_dev = Path::new("/dev").join(name);

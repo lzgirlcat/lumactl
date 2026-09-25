@@ -1,6 +1,5 @@
 use std::{
-    fs,
-    path::{Path, PathBuf},
+    fs, path::{Path, PathBuf},
 };
 
 use eyre::{bail, Result};
