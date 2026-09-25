@@ -19,6 +19,7 @@ use crate::calculate_new_brightness;
 pub fn get_ddc_display(name: &str) -> Result<ddc_hi::Display> {
     let i2c_dev = Path::new("/dev").join(name);
     let mut ddc = I2cDdc::new(I2c::from_path(i2c_dev)?);
+    ddc.set_sleep_delay(Delay::new(Duration::from_millis(25)));
     let id = ddc
         .inner_ref()
         .inner_ref()
