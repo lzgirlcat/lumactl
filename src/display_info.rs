@@ -8,6 +8,7 @@ pub struct DisplayInfo {
     pub name: String,
     pub serial: String,
     pub make: String,
+    pub focused: Option<bool>,
 }
 
 impl DisplayInfo {
@@ -28,6 +29,7 @@ impl DisplayInfo {
             || self.serial.contains(display_name)
             || self.make.contains(display_name)
             || self.full_name() == display_name
+            || (self.focused.unwrap() && display_name == "focused")
     }
 
     pub fn full_name(&self) -> String {
