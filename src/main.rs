@@ -126,8 +126,9 @@ fn main() -> Result<()> {
                             br_ctl.and_then(|mut br_ctl| {
                                 br_ctl.brightness().map(|(brightness, max_brightness)| {
                                     println!(
-                                        "{}: {}",
+                                        "{} {}: {}",
                                         display.name,
+                                        display.full_name(),
                                         format_brightness(brightness, max_brightness, percentage)
                                     );
                                 })

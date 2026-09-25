@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{format, process::Command};
 
 use eyre::{Context, Result};
 
@@ -27,6 +27,10 @@ impl DisplayInfo {
             || self.model.contains(display_name)
             || self.serial.contains(display_name)
             || self.make.contains(display_name)
-            || format!("{} {} {}", self.make, self.model, self.serial) == display_name
+            || self.full_name() == display_name
+    }
+
+    pub fn full_name(&self) -> String {
+        return format!("{} {} {}", self.make, self.model, self.serial);
     }
 }
