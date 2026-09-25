@@ -34,8 +34,8 @@ enum Subcmd {
             help = "The display to get the brightness of (all displays if not provided)"
         )]
         display: Option<String>,
-        #[clap(long, short, help = "Output the brightness as a percentage")]
-        percentage: bool,
+        #[clap(long, short, help = "Output the brightness as an absolute value")]
+        absolute: bool,
     },
     #[clap(about = "Get the brightness of one or all displays")]
     Set {
@@ -102,7 +102,7 @@ fn main() -> Result<()> {
     match args.cmd {
         Subcmd::Get {
             display,
-            percentage,
+            absolute,
         } => {
             if let Some(display_name) = display {
                 let mut br_ctl = BrightnessControl::get_from_name(&display_name)?;
@@ -110,7 +110,7 @@ fn main() -> Result<()> {
                     Ok((brightness, max_brightness)) => {
                         println!(
                             "{}",
-                            format_brightness(brightness, max_brightness, percentage)
+                            format_brightness(brightness, max_brightness, absolute)
                         );
                     }
                     Err(err) => eprintln!("{err:?}"),
@@ -129,7 +129,7 @@ fn main() -> Result<()> {
                                         "{} {}: {}",
                                         display.name,
                                         display.full_name(),
-                                        format_brightness(brightness, max_brightness, percentage)
+                                        format_brightness(brightness, max_brightness, absolute)
                                     );
                                 })
                             })
@@ -175,10 +175,10 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn format_brightness(brightness: u32, max_brightness: u32, percentage: bool) -> String {
-    if percentage {
-        format!("{:.0}%", brightness as f32 / max_brightness as f32 * 100.0)
-    } else {
+fn format_brightness(brightness: u32, max_brightness: u32, absolute: bool) -> String {
+    if absolute {
         format!("{}/{}", brightness, max_brightness)
+    } else {
+        format!("{:.0}%", brightness as f32 / max_brightness as f32 * 100.0)
     }
 }
